@@ -1,5 +1,5 @@
 package constants
 
 const (
-	DefaultModel = "llama3.2"
+	DefaultModel = "qwen2.5:3b"
 )

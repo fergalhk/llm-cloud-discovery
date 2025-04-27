@@ -44,7 +44,7 @@ func (t *Tool) ParameterDefinitions() []tools.ParameterDefinition {
 		{
 			// note - we can't use Enum, as the resulting list is so large that it causes the input to be truncated
 			Name:        parameterResourceType,
-			Description: "The type of resource to list or retrieve. This is in the format of AWS::Service::ResourceType, for example AWS::EC2::Instance.",
+			Description: "The type of resource to list or retrieve. This is in the format of AWS::Service::ResourceType, for example AWS::EC2::Instance. Resource types always begin with `AWS::`.",
 			Required:    true,
 			Type:        tools.ParameterTypeString,
 		},
