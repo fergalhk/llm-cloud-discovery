@@ -80,7 +80,7 @@ func (c *ollamaService) doChatWithTools(ctx context.Context) (api.ChatResponse, 
 		c.pushRawMessage(chatResponse.Message)
 		for i, toolCall := range chatResponse.Message.ToolCalls {
 			log := c.log.With(zap.String("tool", toolCall.Function.Name), zap.Int("tool_call_index", i), zap.Any("arguments", toolCall.Function.Arguments))
-			log.Debug("Invoking tool", zap.String("tool", toolCall.Function.Name), zap.Int("tool_call_index", i), zap.Any("arguments", toolCall.Function.Arguments))
+			log.Debug("Invoking tool")
 			toolResult, err := c.toolRegistry.Call(ctx, toolCall.Function.Name, toolCall.Function.Arguments)
 			if err != nil {
 				log.Warn("Tool call returned error, returning error to LLM", zap.Error(err))
