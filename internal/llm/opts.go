@@ -38,8 +38,8 @@ func WithSystemPrompt(systemPrompt string) Opt {
 	}
 }
 
-func WithToolFunction(toolFunction tools.Function) Opt {
+func WithToolFunction(toolFunctions ...tools.Function) Opt {
 	return func(o *ollamaOpts) {
-		o.toolFunctions = append(o.toolFunctions, toolFunction)
+		o.toolFunctions = append(o.toolFunctions, toolFunctions...)
 	}
 }

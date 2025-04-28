@@ -8,6 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.14
 	github.com/aws/aws-sdk-go-v2/service/cloudcontrol v1.24.3
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.59.2
+	github.com/jackc/pgx/v5 v5.7.4
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/ollama/ollama v0.6.6
 	go.uber.org/zap v1.27.0
@@ -28,6 +29,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.19 // indirect
 	github.com/aws/smithy-go v1.22.2 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
+	golang.org/x/crypto v0.33.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 )

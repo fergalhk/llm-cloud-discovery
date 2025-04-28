@@ -13,6 +13,7 @@ import (
 type (
 	Service interface {
 		Chat(ctx context.Context, prompt string) (string, error)
+		Reset()
 	}
 	ollamaService struct {
 		log          *zap.Logger
@@ -20,6 +21,7 @@ type (
 		toolRegistry *tools.Registry
 		ollamaTools  api.Tools
 		ollamaClient *api.Client
+		systemPrompt string
 
 		// messages is the history of messages, including the system prompt & the LLM responses
 		messages []api.Message
@@ -32,6 +34,7 @@ func NewOllamaService(log *zap.Logger, cl *api.Client, opts ...Opt) (Service, er
 	svc := &ollamaService{
 		log:          log,
 		model:        o.model,
+		systemPrompt: o.systemPrompt,
 		toolRegistry: tools.NewRegistry(o.toolFunctions...),
 		ollamaClient: cl,
 	}
@@ -43,10 +46,7 @@ func NewOllamaService(log *zap.Logger, cl *api.Client, opts ...Opt) (Service, er
 	svc.log.Debug("Built tools", zap.Any("tools", ollamaTools))
 	svc.ollamaTools = ollamaTools
 
-	if o.systemPrompt != "" {
-		svc.log.Debug("Adding system prompt", zap.String("prompt", o.systemPrompt))
-		svc.pushMessage("system", o.systemPrompt)
-	}
+	svc.resetMessages()
 
 	return svc, nil
 }
@@ -59,6 +59,11 @@ func (c *ollamaService) Chat(ctx context.Context, prompt string) (string, error)
 	}
 
 	return finalResponse.Message.Content, nil
+}
+
+func (c *ollamaService) Reset() {
+	c.log.Debug("Resetting history")
+	c.resetMessages()
 }
 
 func (c *ollamaService) doChatWithTools(ctx context.Context) (api.ChatResponse, error) {
@@ -114,6 +119,15 @@ func (c *ollamaService) callChat(ctx context.Context) (api.ChatResponse, error) 
 	}
 
 	return chatResponse, nil
+}
+
+func (o *ollamaService) resetMessages() {
+	o.log.Debug("Resetting messages")
+	o.messages = []api.Message{}
+	if o.systemPrompt != "" {
+		o.log.Debug("Adding system prompt", zap.String("prompt", o.systemPrompt))
+		o.pushMessage("system", o.systemPrompt)
+	}
 }
 
 func (c *ollamaService) pushMessage(role, content string) {
